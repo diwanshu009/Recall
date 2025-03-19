@@ -8,6 +8,15 @@ async function Navbar() {
     const user = await currentUser();
     if(user) await syncUser()
 
+        const userData = user ? {
+            clerkId: user.id,
+            name : `${user.firstName || ""} ${user.lastName || ""}`,
+            username: user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+            email: user.emailAddresses[0].emailAddress,
+            image: user.imageUrl,
+        } : null;
+    
+
     return (
         <nav className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
             <div className="max-w-7xl mx-auto px-4">
@@ -19,7 +28,7 @@ async function Navbar() {
                     </div>
 
                     <DesktopNavbar />
-                    <MobileNavbar />
+                    <MobileNavbar user={userData} />
                 </div>
             </div>
         </nav>
